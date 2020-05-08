@@ -20,6 +20,10 @@ void errorw(){
     printf(1, "Gagal write\n");
     exit();
  }
+//Command cmp :
+//Membandingkan 2 file byte per byte
+//Contoh: cmp file1.c file2.c -> outputnya menunjukkan kedua file tersebut 
+//tidak sama pertama kali di byte ke-berapa dan line ke-berapa
 
 int main(int arg1, char *arg2[])
 {
@@ -67,10 +71,10 @@ int main(int arg1, char *arg2[])
     fstat(cmpr2,&st);
     size1 = st.size; 
     char buf2[st.size];
-
+	//menghitung ukuran-ukurannya
     if(size > size1) jumlah_byte = size;
     else if (size <= size1) jumlah_byte = size1;
-	//looping untuk melakukan cek size dari buffer
+	//looping untuk melakukan cek posisi
     //finding byte position
     while (((x = read(cmpr1, buf1, sizeof(buf1))) > 0) && ((y = read(cmpr2, buf2, sizeof(buf2))) > 0))
     {
@@ -81,18 +85,19 @@ int main(int arg1, char *arg2[])
 	//print jumlah bytes dari masing-masing file (sebagai referensi dan patokan perbandingan)
     printf(2,"Bytes of %s = %d\n", arg2[1], size);
     printf(2,"Bytes of %s = %d\n", arg2[2], size1);
+	    //file kosong-> error
     if (x == -1) error();
     if (y == -1) error();
   //  ulang = 0;
     for (ulang =0; ulang < jumlah_byte; ulang++)
     {
-        count_byte = 0;
+        count_byte = 0; //penanda
         if(buf1[ulang] != buf2[ulang])
         {
             count_byte = ulang;
             break;
         }
-        if(buf1[ulang] == '\n') lines++;
+        if(buf1[ulang] == '\n') lines++; //akan membaca line demi line
        // ulang++;
     }
     //jika ternyata file tersebut memiliki size yang sama 
